@@ -13,7 +13,7 @@ define(['angular', 'require', 'angular-route'], function (angular, require) {
         function($routeProvider, $controllerProvider) {
 
             var routeMap = {
-                '/module2': {                           //路由
+                '/module2/:name': {                           //路由
                     path: 'module2/module2.js',         //模块的代码路径
                     controller: 'module2Controller'     //控制器名称
                 }

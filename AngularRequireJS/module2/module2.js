@@ -5,7 +5,8 @@ define(['angular', 'text!module2/tpl.html'], function (angular, tpl) {
 
     //angular会自动根据controller函数的参数名，导入相应的服务
     return {
-        controller: function ($scope, $http, $interval) {
+        controller: function ($scope, $routeParams, $http, $interval) {
+            console.log($routeParams);  //获得路由中的参数
             $scope.date = '2015-07-13';
         },
         tpl: tpl
