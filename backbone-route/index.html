@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Underscore & Director & Requirejs</title>
+</head>
+
+<body>
+<div id="container"></div>
+<script src="libs/backbone-route.js"></script>
+<script>
+
+    Route.init({
+        'module1': function(){
+            console.log(1);
+        },
+        'module2/:name/:age': function(){
+            console.log(2, arguments);
+        },
+        'module3(/:name)(/:age)': function(){
+            console.log('3', arguments);
+        },
+        '*': function(){
+            console.log(404);
+        }
+    });
+</script>
+<!--<script data-baseurl="./" data-main="main.js" src="libs/require.js" id="main"></script>-->
+</body>
+</html>
