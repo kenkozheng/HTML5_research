@@ -1,22 +1,2 @@
-<script src="libs/backbone-route.js"></script>
-<script>
-
-    Route.init({
-        'module1': function(){
-            console.log(1);
-        },
-        'module2/:name/:age': function(){
-            console.log(2, arguments);
-        },
-        'module3(/:name)(/:age)': function(){
-            console.log('3', arguments);
-        },
-        '*': function(){
-            console.log(404);
-        }
-    });
-</script>
-
-
-url：
-index.html#module2
+类似backbone的路由
+但这个是纯路由，没有多余的代码，非常简单
