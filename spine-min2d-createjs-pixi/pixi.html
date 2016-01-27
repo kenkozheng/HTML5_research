@@ -1,0 +1,40 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+    <meta charset="UTF-8">
+    <title>spine-js</title>
+    <script src="js/pixi/pixi.js"></script>
+    <script src="js/pixi/pixi-spine.js"></script>
+</head>
+<body onLoad="init()">
+<div id="wrapper">
+</div>
+<script>
+    function init() {
+        var renderer = new PIXI.CanvasRenderer(400, 600);
+        document.body.appendChild(renderer.view);
+        var stage = new PIXI.Container();
+        PIXI.loader.add('spineCharacter', 'data/Boy_ShortsShirt_Angry.json')
+//        PIXI.loader.add('spineCharacter', 'data/skeleton.json')
+                .load(function (loader, resources) {
+                    var animation = new PIXI.spine.Spine(resources.spineCharacter.spineData);
+                    stage.addChild(animation);
+//                    animation.state.addAnimationByName(0, 'hiphop02', true, 0);
+                    animation.state.addAnimationByName(0, 'angry_sender_0', true, 0);
+//                    animation.state.addAnimationByName(0, 'angry_recipient_1', true, 0);
+                    animation.x = 100;
+                    animation.y = 300;
+                    animation.scale.x = 0.5;
+                    animation.scale.y = 0.5;
+                    animate();
+
+                    function animate() {
+                        requestAnimationFrame(animate);
+                        renderer.render(stage);
+                    }
+                });
+
+    }
+</script>
+</body>
+</html>

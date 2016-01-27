@@ -1,0 +1,46 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>spine-js</title>
+<script src="js/easeljs/easeljs-0.7.0.min.js"></script>
+<script src="js/easeljs/spine.js"></script>
+<script src="js/easeljs/main.js"></script>
+<style type="text/css">
+body {
+	margin:0;
+	font-family:Helvetica, Arial, sans-serif;
+	font-size:10px;
+}
+
+#wrapper {
+	position:absolute;
+}
+
+#bg {
+	position:absolute;
+	width:100%;
+	height:100%;
+}
+
+#canvas {
+	position:absolute;
+}
+
+#inputs {
+	position:absolute;
+	padding:5px;
+	background-color:#FFFFFF;
+	opacity:0.9;
+	text-align:center;
+}
+
+</style>
+</head>
+<body onLoad="init()">
+<div id="wrapper">
+	<div id="bg"></div>
+	<canvas id="canvas"></canvas>
+	<div id="inputs"></div>
+</div>
+</body>
+</html>

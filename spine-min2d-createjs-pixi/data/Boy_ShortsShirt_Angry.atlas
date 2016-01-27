@@ -1,0 +1,258 @@
+
+Boy_ShortsShirt_Angry.png
+size: 1024,1024
+format: RGBA4444
+filter: Linear,Linear
+repeat: none
+Bubble_Large
+  rotate: false
+  xy: 606, 855
+  size: 238, 167
+  orig: 238, 167
+  offset: 0, 0
+  index: -1
+Bubble_Large_Word
+  rotate: false
+  xy: 606, 599
+  size: 186, 115
+  orig: 186, 115
+  offset: 0, 0
+  index: -1
+Bubble_Middle
+  rotate: false
+  xy: 606, 716
+  size: 207, 137
+  orig: 207, 137
+  offset: 0, 0
+  index: -1
+Bubble_Middle_Word
+  rotate: false
+  xy: 606, 522
+  size: 175, 75
+  orig: 175, 75
+  offset: 0, 0
+  index: -1
+Bubble_Name_Word
+  rotate: false
+  xy: 606, 522
+  size: 175, 75
+  orig: 175, 75
+  offset: 0, 0
+  index: -1
+Bubble_Name
+  rotate: false
+  xy: 2, 20
+  size: 206, 86
+  orig: 206, 86
+  offset: 0, 0
+  index: -1
+Bubble_Small
+  rotate: false
+  xy: 846, 912
+  size: 151, 110
+  orig: 151, 110
+  offset: 0, 0
+  index: -1
+Bubble_Small_Word
+  rotate: true
+  xy: 720, 398
+  size: 122, 58
+  orig: 122, 58
+  offset: 0, 0
+  index: -1
+Eye_Basicclose_00
+  rotate: true
+  xy: 999, 945
+  size: 77, 23
+  orig: 77, 23
+  offset: 0, 0
+  index: -1
+Eye_Basicdoubt_00
+  rotate: true
+  xy: 993, 833
+  size: 77, 29
+  orig: 77, 29
+  offset: 0, 0
+  index: -1
+Eye_Basicopen_00
+  rotate: false
+  xy: 846, 846
+  size: 77, 26
+  orig: 77, 26
+  offset: 0, 0
+  index: -1
+Eye_Basicwink_00
+  rotate: false
+  xy: 210, 2
+  size: 74, 24
+  orig: 74, 24
+  offset: 0, 0
+  index: -1
+Eyes_Expression/Eye_Angry_02
+  rotate: true
+  xy: 452, 32
+  size: 74, 76
+  orig: 74, 76
+  offset: 0, 0
+  index: -1
+Eyes_Expression/Eye_Close_00
+  rotate: false
+  xy: 434, 3
+  size: 67, 27
+  orig: 67, 27
+  offset: 0, 0
+  index: -1
+Forearm_Left
+  rotate: false
+  xy: 815, 776
+  size: 29, 77
+  orig: 29, 77
+  offset: 0, 0
+  index: -1
+Forearm_Right
+  rotate: true
+  xy: 357, 2
+  size: 28, 75
+  orig: 28, 75
+  offset: 0, 0
+  index: -1
+Fringe_Back
+  rotate: true
+  xy: 606, 268
+  size: 125, 98
+  orig: 125, 98
+  offset: 0, 0
+  index: -1
+Fringe_Front
+  rotate: false
+  xy: 357, 32
+  size: 93, 74
+  orig: 93, 74
+  offset: 0, 0
+  index: -1
+Head
+  rotate: false
+  xy: 606, 395
+  size: 112, 125
+  orig: 112, 125
+  offset: 0, 0
+  index: -1
+Mouth_Expression/Mouth_Angry_02
+  rotate: false
+  xy: 286, 3
+  size: 39, 23
+  orig: 39, 23
+  offset: 0, 0
+  index: -1
+Mouth_Expression/Mouth_Angry_08
+  rotate: true
+  xy: 794, 687
+  size: 27, 10
+  orig: 27, 10
+  offset: 0, 0
+  index: -1
+Mouth_Expression/Mouth_Angry_10
+  rotate: false
+  xy: 566, 76
+  size: 27, 30
+  orig: 27, 30
+  offset: 0, 0
+  index: -1
+Mouth_Expression/Mouth_Angry_11
+  rotate: false
+  xy: 846, 804
+  size: 51, 40
+  orig: 51, 40
+  offset: 0, 0
+  index: -1
+Mouth_basic_00
+  rotate: true
+  xy: 2, 2
+  size: 16, 5
+  orig: 16, 5
+  offset: 0, 0
+  index: -1
+Mouth_basic_03
+  rotate: true
+  xy: 783, 582
+  size: 15, 9
+  orig: 15, 9
+  offset: 0, 0
+  index: -1
+Mouth_basic_04
+  rotate: true
+  xy: 706, 378
+  size: 15, 7
+  orig: 15, 7
+  offset: 0, 0
+  index: -1
+Pants_Front
+  rotate: true
+  xy: 642, 196
+  size: 70, 58
+  orig: 70, 58
+  offset: 0, 0
+  index: -1
+Pants_Left
+  rotate: true
+  xy: 846, 874
+  size: 36, 145
+  orig: 36, 145
+  offset: 0, 0
+  index: -1
+Pants_Right
+  rotate: false
+  xy: 606, 119
+  size: 34, 147
+  orig: 34, 147
+  offset: 0, 0
+  index: -1
+Tops
+  rotate: true
+  xy: 210, 28
+  size: 78, 145
+  orig: 78, 145
+  offset: 0, 0
+  index: -1
+Upperarm_Left
+  rotate: false
+  xy: 530, 29
+  size: 34, 77
+  orig: 34, 77
+  offset: 0, 0
+  index: -1
+Upperarm_Right
+  rotate: false
+  xy: 642, 116
+  size: 35, 78
+  orig: 35, 78
+  offset: 0, 0
+  index: -1
+fire_01
+  rotate: false
+  xy: 2, 566
+  size: 300, 456
+  orig: 300, 456
+  offset: 0, 0
+  index: -1
+fire_03
+  rotate: false
+  xy: 2, 108
+  size: 300, 456
+  orig: 300, 456
+  offset: 0, 0
+  index: -1
+fire_05
+  rotate: false
+  xy: 304, 566
+  size: 300, 456
+  orig: 300, 456
+  offset: 0, 0
+  index: -1
+fire_07
+  rotate: false
+  xy: 304, 108
+  size: 300, 456
+  orig: 300, 456
+  offset: 0, 0
+  index: -1
