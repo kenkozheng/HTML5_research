@@ -1,6 +1,4 @@
 工作计划：
-1、如何inline css。考虑把css作为一个模块，引入
-2、uglify如何去除alert
 3、写博客，关于cdn vue多页应用的文章
 
 4、ssr改造

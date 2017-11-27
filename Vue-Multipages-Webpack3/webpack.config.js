@@ -7,20 +7,21 @@ var WriteFilePlugin = require('write-file-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 
 //kenko 修改点
-var pages = ['page1', 'page2'];
+var pages = ['page1', 'page2'];         //可以根据项目情况，自动分析目录文件生成
 var entry = {};
 pages.forEach(function (pageName) {
     entry[pageName] = `./src/pages/${pageName}/main.js`;
 });
 var dist = process.env.NODE_ENV === 'production' ? 'dist' : 'dev';      //开发中和发布后放置不同目录
+var publicPath = process.env.NODE_ENV === 'production' ? '/' : '/dev';
 //////////////
 
 module.exports = {
     entry: entry,
     output: {
         path: path.resolve(__dirname, `./${dist}/`),
-        publicPath: '/',       //发布后在线访问的url。dev模式下，使用的是express在当前项目根目录启动
-        filename: `[name].js`   //'[name].[chunkhash].js'
+        publicPath: publicPath,       //发布后在线访问的url。dev模式下，使用的是express在当前项目根目录启动
+        filename: `[name].js`   //'[name].[chunkhash].js', '[name].[hash:8].js'
     },
     module: {
         rules: [
@@ -47,7 +48,7 @@ module.exports = {
                 test: /\.(png|jpg|gif|svg)$/,
                 loader: 'file-loader',
                 options: {
-                    name: './img/[name].[hash].[ext]'    //自动hash命名图片等资源，并修改路径。路径需要根据项目实际情况确定
+                    name: './img/[name].[hash:8].[ext]'    //自动hash命名图片等资源，并修改路径。路径需要根据项目实际情况确定。语法参考：https://doc.webpack-china.org/loaders/file-loader/
                 }
             }
         ]
@@ -61,7 +62,8 @@ module.exports = {
     devServer: {
         historyApiFallback: true,
         noInfo: true,
-        overlay: true
+        overlay: true,
+        port: 8088
     },
     performance: {
         hints: false
@@ -73,9 +75,9 @@ module.exports = {
     //不使用devserver访问，就更需要强制写入了。例如fiddler替换
     plugins: [
         new CleanWebpackPlugin([dist]),
-        new CopyWebpackPlugin([
-            {context: 'src/css/', from: '**/*', to: path.resolve(__dirname, `${dist}/css`)}
-        ]),
+        // new CopyWebpackPlugin([          //原来打算css是html引入的，后来还是改为js import，可以统一管理css的图片url
+        //     {context: 'src/css/', from: '**/*', to: path.resolve(__dirname, `${dist}/css`)}
+        // ]),
         new WriteFilePlugin({
             test: /\.css|\.html|\.js$/,     // Write only files that match the regexp
             useHashIndex: true  //Use hash index to write only files that have changed since the last iteration
@@ -87,8 +89,9 @@ module.exports = {
 pages.forEach(function (pageName) {
     module.exports.plugins.push(
         new HtmlWebpackPlugin({
+            title: pageName,
             filename: `${pageName}.html`,
-            template: `./src/pages/${pageName}/main.html`,
+            template: `./src/pages/tpl.html`,
             chunks: [pageName],
             inlineSource: '.(js|css)$' // embed all javascript and css inline。结合HtmlWebpackInlineSourcePlugin才有效果
         })
@@ -108,7 +111,10 @@ if (process.env.NODE_ENV === 'production') {
         new webpack.optimize.UglifyJsPlugin({
             //sourceMap: true,  //开启max_line_len后会有报错，二选一
             compress: {
-                warnings: false
+                warnings: false,
+                drop_debugger: true,
+                drop_console: true,
+                pure_funcs: ['alert']       //去除相应的函数
             },
             output: {
                 max_line_len: 100
