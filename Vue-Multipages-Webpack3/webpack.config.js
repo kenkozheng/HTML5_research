@@ -2,7 +2,6 @@ var path = require('path')
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
 var WriteFilePlugin = require('write-file-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 
@@ -13,7 +12,7 @@ pages.forEach(function (pageName) {
     entry[pageName] = `./src/pages/${pageName}/main.js`;
 });
 var dist = process.env.NODE_ENV === 'production' ? 'dist' : 'dev';      //开发中和发布后放置不同目录
-var publicPath = process.env.NODE_ENV === 'production' ? '/' : '/dev';
+var publicPath = process.env.NODE_ENV === 'production' ? '/' : '/dev/';
 //////////////
 
 module.exports = {
@@ -48,7 +47,7 @@ module.exports = {
                 test: /\.(png|jpg|gif|svg)$/,
                 loader: 'file-loader',
                 options: {
-                    name: './img/[name].[hash:8].[ext]'    //自动hash命名图片等资源，并修改路径。路径需要根据项目实际情况确定。语法参考：https://doc.webpack-china.org/loaders/file-loader/
+                    name: 'img/[name].[hash:8].[ext]'    //自动hash命名图片等资源，并修改路径。路径需要根据项目实际情况确定。语法参考：https://doc.webpack-china.org/loaders/file-loader/
                 }
             }
         ]
@@ -70,18 +69,15 @@ module.exports = {
     },
     devtool: '#eval-source-map',
 
-    //kenko 修改点。把css目录的按相对路径copy过去。默认情况下，3.0版本不写文件，所以devServer下无效 https://www.npmjs.com/package/copy-webpack-plugin
-    //配合WriteFilePlugin可以强制写入。使用HtmlWebpackPlugin后，在devserver也不会生成文件，也需要强制
-    //不使用devserver访问，就更需要强制写入了。例如fiddler替换
+    //kenko 修改点
+    //devserver使用memory-fs，并不直接写文件系统。配合WriteFilePlugin可以强制写入。
+    //如果不使用devserver访问，就需要强制写入了。例如fiddler替换
     plugins: [
         new CleanWebpackPlugin([dist]),
-        // new CopyWebpackPlugin([          //原来打算css是html引入的，后来还是改为js import，可以统一管理css的图片url
-        //     {context: 'src/css/', from: '**/*', to: path.resolve(__dirname, `${dist}/css`)}
-        // ]),
-        new WriteFilePlugin({
-            test: /\.css|\.html|\.js$/,     // Write only files that match the regexp
-            useHashIndex: true  //Use hash index to write only files that have changed since the last iteration
-        })
+        //new WriteFilePlugin({
+        //    //test: /\.css|\.html|\.js$/,     // Write only files that match the regexp
+        //    useHashIndex: true  //Use hash index to write only files that have changed since the last iteration
+        //})
     ]
 }
 
