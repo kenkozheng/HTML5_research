@@ -1,14 +1,15 @@
 工作计划：
 3、写博客，关于cdn vue多页应用的文章
 
-6、ssr后交互的js在哪里（加上client manifest打包）
-5、bundle.json打包多个
-7、代码错误如何调试
-4、server和client 共用两重lib的例子（兼容import和module.exports）
 
+#热更新没有输出文件
+#exports 报错
+#dev和build都可以打开
+#bundle.json打包多个
+#自动生成app.js、entry等等几个文件
+#代码错误如何调试
+#server和client 共用两重lib的例子（兼容import和module.exports）
 
-todo
-加入开发环境热更新，参考：https://github.com/vuejs/vue-hackernews-2.0
 
 
 5、相应的ssr文章

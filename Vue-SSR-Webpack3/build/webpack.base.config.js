@@ -2,26 +2,13 @@ var path = require('path');
 var webpack = require('webpack');
 var WriteFilePlugin = require('write-file-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
-var VueSSRServerPlugin = require('vue-server-renderer/server-plugin');      //这个是关键
-
-//kenko 修改点
-var pages = ['page1', 'page2'];         //可以根据项目情况，自动分析目录文件生成
-var entry = {};
-pages.forEach(function (pageName) {
-    entry[pageName] = `./web/pages/${pageName}/main.js`;
-});
-var dist = 'dist';
-var publicPath = '/dist';         //express要做静态映射(server.js)
-//////////////
 
 module.exports = {
     target: 'node',
-    entry: entry,
     output: {
-        path: path.resolve(__dirname, `./${dist}/`),
-        publicPath: publicPath,       //发布后在线访问的url。dev模式下，使用的是express在当前项目根目录启动
-        filename: `[name].js`,   //'[name].[chunkhash].js', '[name].[hash:8].js'
-        libraryTarget: 'commonjs2'
+        path: path.resolve(__dirname, `../dist/`),
+        publicPath: '/dist/',       //发布后在线访问的url
+        filename: `[name].js`   //'[name].[chunkhash].js', '[name].[hash:8].js'
     },
     module: {
         rules: [
@@ -48,7 +35,7 @@ module.exports = {
                 test: /\.(png|jpg|gif|svg)$/,
                 loader: 'file-loader',
                 options: {
-                    name: '/img/[name].[hash:8].[ext]'    //自动hash命名图片等资源，并修改路径。路径需要根据项目实际情况确定。语法参考：https://doc.webpack-china.org/loaders/file-loader/
+                    name: 'img/[name].[hash:8].[ext]'    //自动hash命名图片等资源，并修改路径。路径需要根据项目实际情况确定。语法参考：https://doc.webpack-china.org/loaders/file-loader/
                 }
             }
         ]
@@ -62,12 +49,8 @@ module.exports = {
     performance: {
         hints: false
     },
-    devtool: '#eval-source-map',
-
-    plugins: [
-        new VueSSRServerPlugin()
-    ]
-}
+    devtool: '#eval-source-map'
+};
 
 if (process.env.NODE_ENV === 'production') {
     module.exports.devtool = '#source-map'

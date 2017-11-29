@@ -2,7 +2,7 @@
     <div id="app" v-on:click="change">
         <img src="../../img/logo.png">
         <h1>{{ msg }}</h1>
-        <h2>index</h2>
+        <h2>page</h2>
     </div>
 </template>
 
