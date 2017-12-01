@@ -2,14 +2,12 @@
 3、写博客，关于cdn vue多页应用的文章
 
 
-#热更新没有输出文件
-#exports 报错
 #dev和build都可以打开
 #bundle.json打包多个
-#自动生成app.js、entry等等几个文件
-#代码错误如何调试
+#app.js、entry等等几个文件, 改为合并到html中直出
 #server和client 共用两重lib的例子（兼容import和module.exports）
 
 
 
 5、相应的ssr文章
+客户端报错或debugger都有sourcemap支持，可以直接调试源代码

@@ -8,7 +8,7 @@ const config = merge(base, {
         app: `./web/pages/page1/entry-client.js`
     },
     output: {
-        filename: '[name]-client-bundle.js'
+        filename: '[name].[hash:8].js'
     },
     plugins: [
         // strip dev-only code in Vue source

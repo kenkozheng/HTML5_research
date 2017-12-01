@@ -15,6 +15,7 @@
     "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js --progress --hide-modules"
   },
   "dependencies": {
+    "cross-env": "^5.0.5",
     "express": "^4.16.2",
     "lru-cache": "^4.1.1",
     "vue": "^2.5.9"
@@ -32,17 +33,15 @@
     "chokidar": "^1.7.0",
     "clean-webpack-plugin": "^0.1.17",
     "copy-webpack-plugin": "^4.2.3",
-    "cross-env": "^5.0.5",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",
     "memory-fs": "^0.4.1",
     "vue-loader": "^13.0.5",
     "vue-server-renderer": "^2.5.9",
     "vue-template-compiler": "^2.5.9",
-    "webpack": "^3.6.0",
+    "webpack": "^3.8.1",
     "webpack-dev-middleware": "^1.12.2",
     "webpack-hot-middleware": "^2.21.0",
-    "webpack-merge": "^4.1.1",
-    "write-file-webpack-plugin": "^4.2.0"
+    "webpack-merge": "^4.1.1"
   }
 }

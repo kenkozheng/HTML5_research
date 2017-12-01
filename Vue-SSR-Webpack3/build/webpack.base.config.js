@@ -1,14 +1,11 @@
 var path = require('path');
 var webpack = require('webpack');
-var WriteFilePlugin = require('write-file-webpack-plugin');
-var CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
-    target: 'node',
     output: {
         path: path.resolve(__dirname, `../dist/`),
         publicPath: '/dist/',       //发布后在线访问的url
-        filename: `[name].js`   //'[name].[chunkhash].js', '[name].[hash:8].js'
+        filename: `[name].[hash:8].js`   //'[name].[chunkhash].js', '[name].[hash:8].js'
     },
     module: {
         rules: [
@@ -20,11 +17,7 @@ module.exports = {
                 ],
             }, {
                 test: /\.vue$/,
-                loader: 'vue-loader',
-                options: {
-                    loaders: {}
-                    // other vue-loader options go here
-                }
+                loader: 'vue-loader'
             },
             {
                 test: /\.js$/,
