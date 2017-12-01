@@ -2,7 +2,6 @@
 3、写博客，关于cdn vue多页应用的文章
 
 
-#dev和build都可以打开
 #bundle.json打包多个
 #app.js、entry等等几个文件, 改为合并到html中直出
 #server和client 共用两重lib的例子（兼容import和module.exports）

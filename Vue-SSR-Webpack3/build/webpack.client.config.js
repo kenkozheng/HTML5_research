@@ -3,12 +3,15 @@ const merge = require('webpack-merge')
 const base = require('./webpack.base.config')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 
+let app = 'page1';
+let entry = {
+    [app]: `./web/pages/page1/entry-client.js`
+};
+
 const config = merge(base, {
-    entry: {
-        app: `./web/pages/page1/entry-client.js`
-    },
+    entry: entry,
     output: {
-        filename: '[name].[hash:8].js'
+        filename: `${app}/[name].[hash:8].js`
     },
     plugins: [
         // strip dev-only code in Vue source
@@ -18,7 +21,7 @@ const config = merge(base, {
         }),
         // extract vendor chunks for better caching
         new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor',
+            name: `vendor`,
             minChunks: function (module) {
                 // a module is extracted into the vendor chunk if...
                 return (
@@ -32,9 +35,12 @@ const config = merge(base, {
         // extract webpack runtime & manifest to avoid vendor chunk hash changing
         // on every build.
         new webpack.optimize.CommonsChunkPlugin({
-            name: 'manifest'
+            name: `manifest`        //自动生成在跟output.filename 同一层目录
         }),
-        new VueSSRClientPlugin()
+        // 用于控制文件名等等，代码不多
+        new VueSSRClientPlugin({
+            filename: `${app}/vue-ssr-client-manifest.json`
+        })
     ]
 })
 

@@ -4,10 +4,15 @@ const base = require('./webpack.base.config')
 //const nodeExternals = require('webpack-node-externals')
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin')
 
+let app = 'page1';
+let entry = {
+    [app]: `./web/pages/page1/entry-client.js`
+};
+
 module.exports = merge(base, {
     target: 'node',
     devtool: '#source-map',
-    entry: './web/pages/page1/entry-server.js',
+    entry: entry,
     output: {
         filename: `[name].[hash:8].js`,
         libraryTarget: 'commonjs2'
@@ -30,6 +35,8 @@ module.exports = merge(base, {
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
             'process.env.VUE_ENV': '"server"'
         }),
-        new VueSSRServerPlugin()
+        new VueSSRServerPlugin({
+            filename: `${app}/vue-ssr-server-bundle.json`
+        })
     ]
 })
