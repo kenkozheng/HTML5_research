@@ -1,0 +1,47 @@
+{
+  "name": "vuessr",
+  "description": "nodejs",
+  "version": "1.0.0",
+  "author": "kenkozheng <160150553@qq.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "node server/server",
+    "start": "cross-env NODE_ENV=production node server/server",
+    "dev:client": "cross-env NODE_ENV=development webpack --watch --config build/webpack.client.config.js",
+    "dev:server": "cross-env NODE_ENV=development webpack --watch --config build/webpack.server.config.js",
+    "build": "rimraf dist && npm run build:client && npm run build:server",
+    "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.config.js --progress --hide-modules",
+    "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js --progress --hide-modules"
+  },
+  "dependencies": {
+    "cross-env": "^5.0.5",
+    "express": "^4.16.2",
+    "lru-cache": "^4.1.1",
+    "vue": "^2.5.9"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "chokidar": "^1.7.0",
+    "clean-webpack-plugin": "^0.1.17",
+    "copy-webpack-plugin": "^4.2.3",
+    "css-loader": "^0.28.7",
+    "file-loader": "^1.1.4",
+    "memory-fs": "^0.4.1",
+    "vue-loader": "^13.0.5",
+    "vue-server-renderer": "^2.5.9",
+    "vue-template-compiler": "^2.5.9",
+    "webpack": "^3.8.1",
+    "webpack-dev-middleware": "^1.12.2",
+    "webpack-hot-middleware": "^2.21.0",
+    "webpack-merge": "^4.1.1"
+  }
+}
