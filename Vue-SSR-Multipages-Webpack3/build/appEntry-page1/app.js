@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import App from './App.vue'
+import App from '../../web/pages/page1/App.vue'
 // import '../../css/base.css'      //要写到vue文件中
 
 // 从客户端渲染改为SSR

@@ -1,18 +1,17 @@
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const base = require('./webpack.base.config')
-const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
+//const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 
-let app = 'page1';
-let entry = {
-    [app]: `./web/pages/page1/entry-client.js`
-};
+//let app = 'page1';            //因为要动态打包多个页面，所以这里都注释掉，在build.js和dev-sever中再动态注入
 
 const config = merge(base, {
-    entry: entry,
-    output: {
-        filename: `${app}/[name].[hash:8].js`
-    },
+    //entry: {
+    //    [app]: `./web/pages/page1/entry-client.js`
+    //},
+    //output: {
+    //    filename: `${app}/[name].[hash:8].js`
+    //},
     plugins: [
         // strip dev-only code in Vue source
         new webpack.DefinePlugin({
@@ -37,10 +36,10 @@ const config = merge(base, {
         new webpack.optimize.CommonsChunkPlugin({
             name: `manifest`        //自动生成在跟output.filename 同一层目录
         }),
-        // 用于控制文件名等等，代码不多
-        new VueSSRClientPlugin({
-            filename: `${app}/vue-ssr-client-manifest.json`
-        })
+        //// 用于控制文件名等等，代码不多         //因为要动态打包多个页面，所以这里都注释掉，在build.js和dev-sever中再动态注入
+        //new VueSSRClientPlugin({
+        //    filename: `${app}/vue-ssr-client-manifest.json`
+        //})
     ]
 })
 

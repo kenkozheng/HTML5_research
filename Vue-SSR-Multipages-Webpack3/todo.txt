@@ -2,7 +2,8 @@
 3、写博客，关于cdn vue多页应用的文章
 
 
-#bundle.json打包多个
+#devserver多次build的问题
+#ssr哪里传入数据
 #app.js、entry等等几个文件, 改为合并到html中直出
 #server和client 共用两重lib的例子（兼容import和module.exports）
 
