@@ -9,11 +9,7 @@
 <script>
     export default {
         name: 'app',
-        data() {
-            return {
-                msg: 'Welcome to Your Vue.js App'
-            }
-        },
+        props: ['msg'],   //从父组件的属性中获取过来的数据
         methods: {
             change (event) {
                 // `event` 是原生 DOM 事件
