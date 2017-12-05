@@ -15,10 +15,13 @@
     "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js --progress --hide-modules"
   },
   "dependencies": {
+    "compression": "^1.7.1",
     "cross-env": "^5.0.5",
     "express": "^4.16.2",
     "lru-cache": "^4.1.1",
-    "vue": "^2.5.9"
+    "serve-favicon": "^2.4.5",
+    "vue": "^2.5.9",
+    "vuex": "^3.0.1"
   },
   "browserslist": [
     "> 1%",

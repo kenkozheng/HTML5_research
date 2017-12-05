@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <!--<meta http-equiv="Content-Security-Policy" content="script-src *.qq.com *.gtimg.cn *.url.cn *.tenpay.com *.qpic.cn *.qpimg.cn *.idqqimg.com *.gtimg.com *.soso.com 'unsafe-inline' 'unsafe-eval';">-->
+    <meta name="keywords" content="">
+    <meta name="format-detection" content="telephone=no">
+    <title>{{title}}</title>
+  </head>
+  <body>
+  <!--
+  createBundleRenderer（server.js）中option传递了template，vue-server-renderer会自动注入，详细看node_module的build.js。
+
+  官方的手工注入数据方法是：
+  renderState({
+    contextKey: 'myCustomState',    //默认是state
+    windowKey: '__MY_STATE__'       //默认__INITIAL_STATE__
+  })
+  传进来的context会被注入renderState等方法。
+  <!--https://ssr.vuejs.org/zh/build-config.html#manual-asset-injection-->
+  <!--等同于<script>var __INITIAL_STATE__ = { { {JSON.stringify(state)} } }</script>，不过多了自动移除的逻辑-->
+
+  <!--The template should contain a comment <!--vue-ssr-outlet- -> which serves as the placeholder for rendered app content.-->
+  <!--vue-ssr-outlet-->
+  </body>
+</html>

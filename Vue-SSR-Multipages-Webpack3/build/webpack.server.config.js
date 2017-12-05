@@ -1,6 +1,7 @@
-const webpack = require('webpack')
-const merge = require('webpack-merge')
-const base = require('./webpack.base.config')
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const base = require('./webpack.base.config');
+const path = require('path');
 //const VueSSRServerPlugin = require('vue-server-renderer/server-plugin')
 
 //let app = 'page1';      //因为要动态打包多个页面，所以这里都注释掉，在build.js和dev-sever中再动态注入
@@ -15,6 +16,11 @@ module.exports = merge(base, {
     output: {
         filename: `[name].[hash:8].js`,
         libraryTarget: 'commonjs2'
+    },
+    resolve: {
+        alias: {
+            'page2Data': path.resolve(__dirname, '../web/lib/page2Data/nodejsData.js')
+        }
     },
     plugins: [
         new webpack.DefinePlugin({

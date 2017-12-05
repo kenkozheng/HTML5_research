@@ -1,26 +1,22 @@
 <template>
     <div id="app" v-on:click="change">
         <img src="../../img/logo.png">
-        <h1>{{ msg }}</h1>
+        <h1>{{ appData.msg }}</h1>
         <h2>page1</h2>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'app',
-        data() {
-            return {
-                msg: 'Welcome to Your Vue.js App'
-            }
-        },
+        name: 'app2',
+        props: ['appData'],
         methods: {
             change (event) {
                 // `event` 是原生 DOM 事件
                 if (event) {
                     alert(event.target.tagName)
                 }
-                this.msg = 'changed';
+                this.appData.msg = 'changed';
             }
         }
     }

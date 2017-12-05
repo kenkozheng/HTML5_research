@@ -1,14 +1,16 @@
+/**
+ * 本文件非vue官方指定必须的文件，是kenko额外抽取的一些页面配置，同时做多页面express路由和直出配置
+ */
 module.exports = {
     'page1': {
-        url: '/page1.html',                 //访问的url规则，用于express的get
-        vue: 'web/pages/page1/App.vue',     //vue主文件，路径规则见build/build.js
-        server: './page1/main.js',            //服务器逻辑，路径相对server.js
-        title: 'Page1'                      //生成html的title
+        url: '/page1.html',                         //访问的url规则，用于express的get
+        dir: './web/pages/page1',                   //页面目录，默认有app.js作为入口
+        title: 'Page1',                             //生成html的title
+        template: './web/pages/page1/tpl.html'      //特殊指定一个html
     },
     'page2': {
         url: '/page2.html',                 //访问的url规则，用于express的get
-        vue: 'web/pages/page2/App.vue',     //vue主文件
-        server: './page2/main.js',            //服务器逻辑
+        dir: './web/pages/page2',          //页面目录，默认有app.js作为入口
         title: 'Page2'                      //生成html的title
     }
 }

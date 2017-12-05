@@ -9,18 +9,17 @@
 <script>
     export default {
         name: 'app',
-        data() {
-            return {
-                msg: 'Welcome to Your Vue.js App'
-            }
-        },
         methods: {
             change (event) {
-                // `event` 是原生 DOM 事件
-                if (event) {
-                    alert(event.target.tagName)
-                }
-                this.msg = 'changed';
+                this.$store.dispatch('setData', 'hello click');
+            }
+        },
+        /**
+         * 动态类型数据
+         */
+        computed: {
+            msg () {
+                return this.$store.state.msg
             }
         }
     }
