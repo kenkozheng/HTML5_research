@@ -11,15 +11,13 @@ var entry = {};
 pages.forEach(function (pageName) {
     entry[pageName] = `./src/pages/${pageName}/main.js`;
 });
-var dist = process.env.NODE_ENV === 'production' ? 'dist' : 'dev';      //开发中和发布后放置不同目录
-var publicPath = process.env.NODE_ENV === 'production' ? '/' : '/dev/';
 //////////////
 
 module.exports = {
     entry: entry,
     output: {
-        path: path.resolve(__dirname, `./${dist}/`),
-        publicPath: publicPath,       //发布后在线访问的url。dev模式下，使用的是express在当前项目根目录启动
+        path: path.resolve(__dirname, `./dist/`),
+        publicPath: process.env.NODE_ENV === 'production' ? '/' : '/dist/',       //发布后在线访问的url。dev模式下，使用的是express在当前项目根目录启动
         filename: `[name].js`   //'[name].[chunkhash].js', '[name].[hash:8].js'
     },
     module: {
@@ -73,7 +71,6 @@ module.exports = {
     //devserver使用memory-fs，并不直接写文件系统。配合WriteFilePlugin可以强制写入。
     //如果不使用devserver访问，就需要强制写入了。例如fiddler替换
     plugins: [
-        new CleanWebpackPlugin([dist]),
         //new WriteFilePlugin({
         //    //test: /\.css|\.html|\.js$/,     // Write only files that match the regexp
         //    useHashIndex: true  //Use hash index to write only files that have changed since the last iteration
@@ -99,6 +96,7 @@ if (process.env.NODE_ENV === 'production') {
     module.exports.devtool = '#source-map'
     // http://vue-loader.vuejs.org/en/workflow/production.html
     module.exports.plugins = (module.exports.plugins || []).concat([
+        new CleanWebpackPlugin(['dist']),
         new webpack.DefinePlugin({
             'process.env': {
                 NODE_ENV: '"production"'
