@@ -37,8 +37,9 @@ module.exports = function setupDevServer (server, templatePath, pageName, client
   })
 
   // modify client config to work with hot middleware
+    var HMRPath = '/__webpack_hmr_' + pageName;
   for (var app in clientConfig.entry) {
-    clientConfig.entry[app] = ['webpack-hot-middleware/client', clientConfig.entry[app]];
+    clientConfig.entry[app] = ['webpack-hot-middleware/client?path=' + HMRPath, clientConfig.entry[app]];
   }
   clientConfig.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
@@ -65,7 +66,7 @@ module.exports = function setupDevServer (server, templatePath, pageName, client
   })
 
   // hot middleware
-  server.use(require('webpack-hot-middleware')(clientCompiler, { heartbeat: 5000 }))
+    server.use(require('webpack-hot-middleware')(clientCompiler, { heartbeat: 5000, path: HMRPath }))
 
   // watch and update server renderer
   const serverCompiler = webpack(serverConfig)
