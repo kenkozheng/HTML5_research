@@ -18,7 +18,7 @@ for (let pageName in router) {
             [pageName]: `${config.dir}/entry-client.js`        //buildEntryFiles生成的配置文件
         },
         output: {
-            filename: isProd ? `js/${pageName}/[name].[hash:8].js` : `js/${pageName}/[name].js` //dist目录
+            filename: isProd ? `js/${pageName}/[name].[chunkhash:8].js` : `js/${pageName}/[name].js` //dist目录
         },
         plugins: [
             new VueSSRClientPlugin({
