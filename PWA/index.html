@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no,viewport-fit=cover"/>
+    <title>PWA</title>
+</head>
+<body>
+<img src="index.jpg" style="width: 100%;"/>
+<div id="console"></div>
+<script>
+    function log() {
+        var argu = Array.prototype.slice.apply(arguments);
+        document.getElementById('console').innerHTML = argu.map(function (item) {
+            return JSON.stringify(item);
+        }).join(', ');
+    }
+
+    window.addEventListener('load', () => {
+        if (!('serviceWorker' in navigator)) {
+            // Service Worker isn't supported on this browser, disable or hide UI.
+            return;
+        }
+
+        if (!('PushManager' in window)) {
+            // Push isn't supported on this browser, disable or hide UI.
+            return;
+        }
+
+        let promiseChain = new Promise((resolve, reject) => {
+            const permissionPromise = Notification.requestPermission(result => {
+                resolve(result);
+            });
+
+            if (permissionPromise) {
+                permissionPromise.then(resolve);
+            }
+        }).then(result => {
+            if (result === 'granted') {
+                console.log('granted');
+            }
+            else {
+                console.log('no permission');
+            }
+
+            navigator.serviceWorker.register('./sw.js')
+                .then(function (registration) {
+
+                    // 注册成功
+                    log('ServiceWorker registration successful with scope: ', registration.scope);
+
+                    // notifiaction demo
+                    registration.showNotification('Hello World!');
+                })
+                .catch(function (err) {
+
+                    // 注册失败:(
+                    log('ServiceWorker registration failed: ', err);
+                });
+        });
+    });
+</script>
+</body>
+</html>
