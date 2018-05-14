@@ -23,42 +23,40 @@
             return;
         }
 
-        if (!('PushManager' in window)) {
-            // Push isn't supported on this browser, disable or hide UI.
-            return;
-        }
+        navigator.serviceWorker.register('./sw.js')
+            .then(function (registration) {
+                // 注册成功
+                log('ServiceWorker registration successful with scope: ', registration.scope);
 
-        let promiseChain = new Promise((resolve, reject) => {
-            const permissionPromise = Notification.requestPermission(result => {
-                resolve(result);
-            });
+                if (!('PushManager' in window)) {
+                    // Push isn't supported on this browser, disable or hide UI.
+                    return;
+                }
 
-            if (permissionPromise) {
-                permissionPromise.then(resolve);
-            }
-        }).then(result => {
-            if (result === 'granted') {
-                console.log('granted');
-            }
-            else {
-                console.log('no permission');
-            }
+                let promiseChain = new Promise((resolve, reject) => {
+                    const permissionPromise = Notification.requestPermission(result => {
+                        resolve(result);
+                    });
 
-            navigator.serviceWorker.register('./sw.js')
-                .then(function (registration) {
-
-                    // 注册成功
-                    log('ServiceWorker registration successful with scope: ', registration.scope);
-
-                    // notifiaction demo
-                    registration.showNotification('Hello World!');
-                })
-                .catch(function (err) {
-
-                    // 注册失败:(
-                    log('ServiceWorker registration failed: ', err);
+                    if (permissionPromise) {
+                        permissionPromise.then(resolve);
+                    }
+                }).then(result => {
+                    if (result === 'granted') {
+                        console.log('granted');
+                        // notifiaction demo
+                        navigator.serviceWorker.ready.then(function(registration) {
+                            registration.showNotification('Hello World!');
+                        });
+                    } else {
+                        console.log('no permission');
+                    }
                 });
-        });
+            })
+            .catch(function (err) {
+                // 注册失败:(
+                log('ServiceWorker registration failed: ', err);
+            });
     });
 </script>
 </body>
