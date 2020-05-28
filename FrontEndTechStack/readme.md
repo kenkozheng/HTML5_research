@@ -15,3 +15,4 @@
 4.高级工程师，一般是团队中的骨干，能带头分析业务的各种难题，包括需求实现的难题和性能优化难题，尤其是性能优化。这需要对所有知识点除了广度外，还要有针对性的深度学习和实践，给项目带来实际性的优化。
 
 
+![stack](https://github.com/kenkozheng/HTML5_research/blob/master/FrontEndTechStack/frontend_stack.png)
