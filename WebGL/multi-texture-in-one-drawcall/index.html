@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>WebGL - 2 Images in 1 Drawcall</title>
+</head>
+<body>
+<canvas id="canvas" width="500" height="800"></canvas>
+
+<!-- vertex shader -->
+<script id="vertex-shader-2d" type="x-shader/x-vertex">
+attribute vec2 a_position;
+attribute vec2 a_texCoord;
+attribute lowp float textureIndex;
+
+uniform vec2 u_resolution;
+varying vec2 v_texCoord;
+varying lowp float indexPicker;
+
+void main() {
+   // convert the rectangle from pixels to 0.0 to 1.0
+   vec2 zeroToOne = a_position / u_resolution;
+
+   // convert from 0->1 to 0->2
+   vec2 zeroToTwo = zeroToOne * 2.0;
+
+   // convert from 0->2 to -1->+1 (clipspace)
+   vec2 clipSpace = zeroToTwo - 1.0;
+
+   gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
+
+   // pass the texCoord to the fragment shader
+   // The GPU will interpolate this value between points.
+   v_texCoord = a_texCoord;
+   indexPicker = textureIndex; // 控制fragment shader选哪一个纹理
+}
+</script>
+<!-- fragment shader -->
+<script id="fragment-shader-2d" type="x-shader/x-fragment">
+precision mediump float;
+
+// our texture
+uniform sampler2D u_image[2];
+
+// the texCoords passed in from the vertex shader.
+varying vec2 v_texCoord;
+varying lowp float indexPicker;
+
+void main() {
+   if (indexPicker < 0.5) {
+       gl_FragColor = texture2D(u_image[0], v_texCoord);
+   } else {
+       gl_FragColor = texture2D(u_image[1], v_texCoord);
+   }
+}
+</script>
+<!--
+for most samples webgl-utils only provides shader compiling/linking and
+canvas resizing because why clutter the examples with code that's the same in every sample.
+See https://webglfundamentals.org/webgl/lessons/webgl-boilerplate.html
+and https://webglfundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
+for webgl-utils, m3, m4, and webgl-lessons-ui.
+-->
+<script src="./assets/webgl-utils.js"></script>
+<script>
+"use strict";
+
+function main() {
+  var image = new Image();
+  image.src = "./assets/leaves.jpg";  // MUST BE SAME DOMAIN!!!
+  image.onload = function() {
+      var image2 = new Image();
+      image2.src = "./assets/two.png";  // MUST BE SAME DOMAIN!!!
+      image2.onload = function() {
+          render(image, image2);
+      };
+  };
+}
+
+function render(image, image2) {
+  // Get A WebGL context
+  /** @type {HTMLCanvasElement} */
+  var canvas = document.querySelector("#canvas");
+  var gl = canvas.getContext("webgl");
+  if (!gl) {
+    return;
+  }
+
+  // setup GLSL program
+  var program = webglUtils.createProgramFromScripts(gl, ["vertex-shader-2d", "fragment-shader-2d"]);
+
+  // look up where the vertex data needs to go.
+  var positionLocation = gl.getAttribLocation(program, "a_position");
+  var texcoordLocation = gl.getAttribLocation(program, "a_texCoord");
+  var textureIndexLocation = gl.getAttribLocation(program, "textureIndex");
+
+  // Create a buffer to put three 2d clip space points in
+  var positionBuffer = gl.createBuffer();
+
+  // Bind it to ARRAY_BUFFER (think of it as ARRAY_BUFFER = positionBuffer)
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  // Set a rectangle the same size as the image.
+  var vertextArray = [...getRectangleVertexArray(0, 0, image.width, image.height),
+      ...getRectangleVertexArray(0, image.height+1, image2.width, image2.height)];
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertextArray), gl.STATIC_DRAW);
+
+  // provide texture coordinates for the rectangle.
+  var texcoordBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+      0.0,  0.0,
+      1.0,  0.0,
+      0.0,  1.0,
+      0.0,  1.0,
+      1.0,  0.0,
+      1.0,  1.0,
+      0.0,  0.0,
+      1.0,  0.0,
+      0.0,  1.0,
+      0.0,  1.0,
+      1.0,  0.0,
+      1.0,  1.0,
+  ]), gl.STATIC_DRAW);
+
+  // provide texture index buffer. 前6次调用用0号纹理，后6次调用用1号纹理
+  var textureIndexBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, textureIndexBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]), gl.STATIC_DRAW);
+
+
+  // Create a texture.
+  var texture = gl.createTexture();
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  // Set the parameters so we can render any size image.
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  // Upload the image into the texture.
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+  // Create another texture.
+  var texture = gl.createTexture();
+  gl.activeTexture(gl.TEXTURE1);
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  // Set the parameters so we can render any size image.
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  // Upload the image into the texture.
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image2);
+
+  // lookup uniforms
+  var resolutionLocation = gl.getUniformLocation(program, "u_resolution");
+  var samplerUniformLocation = gl.getUniformLocation(program, "u_image");
+
+  webglUtils.resizeCanvasToDisplaySize(gl.canvas);
+
+  // Tell WebGL how to convert from clip space to pixels
+  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+  // Clear the canvas
+  gl.clearColor(0, 0, 0, 0);
+  gl.clear(gl.COLOR_BUFFER_BIT);
+
+  // Tell it to use our program (pair of shaders)
+  gl.useProgram(program);
+
+  // Turn on the position attribute
+  gl.enableVertexAttribArray(positionLocation);
+  // Bind the position buffer.
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  // Tell the position attribute how to get data out of positionBuffer (ARRAY_BUFFER)
+  var size = 2;          // 2 components per iteration
+  var type = gl.FLOAT;   // the data is 32bit floats
+  var normalize = false; // don't normalize the data
+  var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
+  var offset = 0;        // start at the beginning of the buffer
+  gl.vertexAttribPointer(
+      positionLocation, size, type, normalize, stride, offset);
+
+
+  // Turn on the texcoord attribute
+  gl.enableVertexAttribArray(texcoordLocation);
+  // bind the texcoord buffer.
+  gl.bindBuffer(gl.ARRAY_BUFFER, texcoordBuffer);
+  // Tell the texcoord attribute how to get data out of texcoordBuffer (ARRAY_BUFFER)
+  var size = 2;          // 2 components per iteration
+  var type = gl.FLOAT;   // the data is 32bit floats
+  var normalize = false; // don't normalize the data
+  var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
+  var offset = 0;        // start at the beginning of the buffer
+  gl.vertexAttribPointer(texcoordLocation, size, type, normalize, stride, offset);
+
+
+
+  // Turn on the textureIndex attribute
+  gl.enableVertexAttribArray(textureIndexLocation);
+  gl.bindBuffer(gl.ARRAY_BUFFER, textureIndexBuffer);
+  // Tell the textureIndex attribute how to get data out of textureIndexBuffer (ARRAY_BUFFER)
+  var size = 1;          // 1 components per iteration
+  var type = gl.FLOAT;   // the data is 32bit floats
+  var normalize = false; // don't normalize the data
+  var stride = 0;        // 0 = move forward size * sizeof(type) each iteration to get the next position
+  var offset = 0;        // start at the beginning of the buffer
+  gl.vertexAttribPointer(textureIndexLocation, size, type, normalize, stride, offset);
+
+
+  // set the resolution
+  gl.uniform2f(resolutionLocation, gl.canvas.width, gl.canvas.height);
+  // set the fragement shader sampler vector
+  gl.uniform1iv(samplerUniformLocation, new Int32Array([0, 1]));
+
+  // Draw the rectangle.
+  var primitiveType = gl.TRIANGLES;
+  var offset = 0;
+  var count = vertextArray.length / 2;
+  gl.drawArrays(primitiveType, offset, count);
+}
+
+
+// set the vertex array
+function getRectangleVertexArray(x, y, width, height) {
+  var x1 = x;
+  var x2 = x + width;
+  var y1 = y;
+  var y2 = y + height;
+  return [
+      x1, y1,
+      x2, y1,
+      x1, y2,
+      x1, y2,
+      x2, y1,
+      x2, y2,
+  ];
+}
+
+main();
+</script>
+
+
+
+</body></html>
