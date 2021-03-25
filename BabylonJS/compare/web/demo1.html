@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+  <title>Demo1</title>
+  <script src="./babylon.max.js"></script>
+  <style>
+      body {
+          margin: 0;
+          padding: 0;
+      }
+      #fps {
+          position: absolute;
+          background-color: black;
+          border: 2px solid red;
+          text-align: center;
+          font-size: 16px;
+          color: white;
+          top: 15px;
+          right: 10px;
+          width: 60px;
+          height: 20px;
+      }
+  </style>
+</head>
+<body>
+<div id="fps">0</div>
+<canvas id="renderCanvas" width="420" height="620" style="width: 420px; height: 1240px"></canvas>
+<script>
+    // Get the canvas DOM element
+    var canvas = document.getElementById('renderCanvas');
+    let divFps = document.getElementById("fps");
+    // Load the 3D engine
+    // doc: https://doc.babylonjs.com/typedoc/classes/babylon.engine#constructor
+    var engine = new BABYLON.Engine(canvas, true, {preserveDrawingBuffer: true, stencil: true}, true);
+    // CreateScene function that creates and return the scene
+    var createScene = function(){
+        // Create a basic BJS Scene object
+        var scene = new BABYLON.Scene(engine);
+        // Create a FreeCamera, and set its position to {x: 0, y: 5, z: -10}
+        var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5, -10), scene);
+        // Target the camera to scene origin
+        camera.setTarget(BABYLON.Vector3.Zero());
+        // Attach the camera to the canvas
+        camera.attachControl(canvas, false);
+        // // Create a basic light, aiming 0, 1, 0 - meaning, to the sky
+        var light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);
+        return scene;
+    }
+    // call the createScene function
+    var scene = createScene();
+
+    const rootNode = new BABYLON.TransformNode("Root Container", scene);
+    const transformContainer = new BABYLON.TransformNode("Transform Container", scene);
+    transformContainer.parent = rootNode;
+    transformContainer.scaling.scaleInPlace(0.3);
+
+    scene.beforeRender = function () {
+        transformContainer.rotate(BABYLON.Vector3.Up(), 0.005 * scene.getAnimationRatio());
+        const list = transformContainer.getChildren();
+        list.forEach(function (node) {
+            node.rotate(BABYLON.Vector3.Left(), 0.005 * scene.getAnimationRatio());
+        })
+    };
+
+    const count = 20;
+    for (let i = -count; i < count; i++) {
+        for (let j = -count; j < count; j++) {
+            // for (let k = -count; k < count; k++) {
+                let sphere = BABYLON.MeshBuilder.CreateTiledBox('CreateTiledBox', {}, scene);
+                sphere.position = new BABYLON.Vector3(i*1.1, j*1.1, 0);
+                sphere.parent = transformContainer;
+            // }
+        }
+    }
+    // run the render loop
+    engine.runRenderLoop(function(){
+        scene.render();
+        divFps.innerHTML = engine.getFps().toFixed() + " fps";
+    });
+    // the canvas/window resize event handler
+    window.addEventListener('resize', function(){
+        engine.resize();
+    });
+
+</script>
+</body>
+</html>
