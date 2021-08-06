@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Await</title>
+</head>
+<body>
+<script>window.Promise = undefined;</script>
+<script src="https://cdn.bootcss.com/es6-promise/4.1.1/es6-promise.auto.js"></script>
+<script>
+    function MyPromise(resolver){
+        resolver((r)=>{
+            this._result = r;
+            this._state = 1;
+        }, (r)=>{
+            this._result = r;
+            this._state = 2;
+        });
+    }
+
+    var prototype = MyPromise.prototype;
+    prototype._state = 0;
+    prototype._result = undefined;
+    prototype._resolveCallbackList = [];
+    prototype._rejectCallbackList = [];
+    prototype.then = function(onResolved, onRejected){
+        onResolved && this._resolveCallbackList.push(onResolved);
+        this._rejectCallbackList.push(onRejected);
+        this.trigger();
+        return this;
+    };
+    prototype.catch = function(onRejected){
+        this._rejectCallbackList.push(onRejected);
+        this.trigger();
+        return this;
+    };
+    prototype.trigger = function(){
+        if(this._state === 1) {
+            this._resolveCallbackList.forEach(func => func(this._result));
+            this._resolveCallbackList = [];
+        } else if(this._state === 2) {
+            this._rejectCallbackList.forEach(func => func(this._result));
+            this._rejectCallbackList = [];
+        }
+    }
+
+    var aRejected = new MyPromise((resolve,reject)=>resolve('MyPromise reject result'));
+    var aRejectedAsync = (async function(){
+        try{
+            await aRejected; //自定义的非严格A+ Promise实现，但是符合条件的thenable对象，await会等待
+            console.log('a resolved');
+        }catch(e){
+            console.log('error', e);
+        }
+    })();
+
+    var aResolved = new MyPromise((r,reject)=>reject('MyPromise reject result'));
+    var aResolvedAsync = (async function(){
+        try{
+            await aResolved; //自定义的非严格A+ Promise实现，但是符合条件的thenable对象，await会等待
+        }catch(e){
+            console.log('error', e);
+        }
+    })();
+
+    var b = new Promise((r,reject)=>reject('Promise reject result'));
+    var basync = (async function(){
+        try{
+            await b;  // 使用的是polyfill版本Promise，实际就是一个function class实例
+        }catch(e){
+            console.log('error',e);
+        }
+    })();
+
+    var c = {name: 'kenko'};
+    var casync = (async function(){
+        try{
+            await c;    // await 不起作用，等于直接同步执行
+            console.log('ccc');
+        }catch(e){
+            console.log('error',e);
+        }
+    })();
+</script>
+</body>
+</html>
