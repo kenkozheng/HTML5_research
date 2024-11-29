@@ -35,7 +35,7 @@
     "babel-preset-stage-3": "^6.24.1",
     "chokidar": "^1.7.0",
     "clean-webpack-plugin": "^0.1.17",
-    "copy-webpack-plugin": "^4.2.3",
+    "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",
     "memory-fs": "^0.4.1",
